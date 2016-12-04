@@ -1,0 +1,55 @@
+{
+  "Resources": {
+    "UserServiceELB": {
+      "Type" : "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "SecurityGroups": ["sg-15931b73"],
+        "AvailabilityZones": ["eu-west-1a", "eu-west-1b"],
+        "Listeners" : [ {
+          "LoadBalancerPort" : "80",
+          "InstancePort" : "8080",
+          "Protocol" : "HTTP"
+        } ],
+
+        "HealthCheck" : {
+          "Target" : "HTTP:8080/healthcheck",
+          "HealthyThreshold" : "3",
+          "UnhealthyThreshold" : "5",
+          "Interval" : "30",
+          "Timeout" : "5"
+        },
+        "Tags": [
+          {"Key": "Name", "Value": "UserServiceELB"}
+        ]
+      }
+    },
+    "UserServiceScalingGroup": {
+      "Type" : "AWS::AutoScaling::AutoScalingGroup",
+      "Properties" : {
+        "AvailabilityZones": ["eu-west-1a", "eu-west-1b"],
+        "LaunchConfigurationName" : { "Ref" : "UserServiceLaunchConfig" },
+        "MinSize" : "1",
+        "MaxSize" : "1",
+        "LoadBalancerNames" : [ { "Ref" : "UserServiceELB" } ]
+      }
+    },
+    "UserServiceLaunchConfig": {
+      "Type" : "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "KeyName" : "aws-keypair",
+        "ImageId": "ami-9398d3e0",
+        "SecurityGroups": ["sg-19931b7f"],
+        "InstanceType": "t2.micro",
+        "IamInstanceProfile": "arn:aws:iam::999987541517:instance-profile/UserServiceRoles-UserServiceInstanceProfile-4D8TE56SDVZM",
+        "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
+          "#!/bin/bash -xe\n",
+          "yum update -y\n",
+          "yum remove -y java-1.7.0-openjdk\n",
+          "yum install -y java-1.8.0-openjdk-headless.x86_64\n",
+          "aws s3 cp s3://manthanhd-buildartifacts/services/userservice/1.0.0/user-service-1.0.0.jar .\n",
+          "/bin/env java -jar user-service-1.0.0.jar\n"
+        ]]}}
+      }
+    }
+  }
+}

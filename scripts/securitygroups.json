@@ -1,0 +1,38 @@
+{
+  "Resources": {
+    "UserServiceELB": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "SG for User Service ELB",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "80",
+            "ToPort" : "80",
+            "CidrIp" : "0.0.0.0/0"
+          }
+        ],
+        "Tags": [
+          {"Key": "Name", "Value": "UserServiceELB"}
+        ]
+      }
+    },
+    "UserServiceEC2": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "SG for User Service EC2",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol" : "tcp",
+            "FromPort" : "8080",
+            "ToPort" : "8080",
+            "SourceSecurityGroupName" : {"Ref": "UserServiceELB"}
+          }
+        ],
+        "Tags": [
+          {"Key": "Name", "Value": "UserServiceEC2"}
+        ]
+      }
+    }
+  }
+}

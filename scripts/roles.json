@@ -1,0 +1,49 @@
+{
+  "Resources": {
+    "UserServiceEC2RolePolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description": "Policy for EC2 Role",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "Stmt1480847440000",
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetObject",
+                "s3:ListBucket"
+              ],
+              "Resource": [
+                "arn:aws:s3:::manthanhd-buildartifacts/services/userservice/*"
+              ]
+            }
+          ]
+        },
+        "Roles": [{"Ref": "UserServiceEC2Role"}]
+      }
+    },
+    "UserServiceInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [ {"Ref": "UserServiceEC2Role"} ]
+      }
+    },
+    "UserServiceEC2Role": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version" : "2012-10-17",
+          "Statement": [ {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [ "ec2.amazonaws.com" ]
+            },
+            "Action": [ "sts:AssumeRole" ]
+          } ]
+        },
+        "RoleName": "UserServiceEC2"
+      }
+    }
+  }
+}
