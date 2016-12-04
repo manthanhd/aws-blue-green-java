@@ -13,10 +13,6 @@ public class UserList {
         users = builder.users;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
     public static UserList from(List<User> userList) {
         return UserList.newBuilder().users(userList).build();
     }
@@ -27,6 +23,10 @@ public class UserList {
 
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 
     public static final class Builder {

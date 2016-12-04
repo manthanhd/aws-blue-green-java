@@ -5,16 +5,13 @@ import com.manthanhd.services.userservice.models.UserList;
 import com.manthanhd.services.userservice.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by manth on 04-Dec-16.

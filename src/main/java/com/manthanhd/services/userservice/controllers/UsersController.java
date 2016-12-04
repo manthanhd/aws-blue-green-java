@@ -26,7 +26,8 @@ public class UsersController {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    @ResponseBody public UserList getAllUsers() {
+    @ResponseBody
+    public UserList getAllUsers() {
         return userService.getAllUsers();
     }
 }

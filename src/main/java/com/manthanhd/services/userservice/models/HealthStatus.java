@@ -10,14 +10,13 @@ public class HealthStatus {
         status = builder.status;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    public String getStatus() {
+        return status;
+    }
 
     public static final class Builder {
         private String status;

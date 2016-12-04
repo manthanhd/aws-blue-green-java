@@ -19,6 +19,10 @@ public class User {
         names = builder.names;
     }
 
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public String getUid() {
         return uid;
     }
@@ -26,11 +30,6 @@ public class User {
     public List<String> getNames() {
         return names;
     }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
 
     public static final class Builder {
         private String uid;
@@ -50,7 +49,7 @@ public class User {
         }
 
         public Builder name(String... nameVarArg) {
-            if(names == null) names = new ArrayList<>();
+            if (names == null) names = new ArrayList<>();
 
             Collections.addAll(names, nameVarArg);
             return this;
