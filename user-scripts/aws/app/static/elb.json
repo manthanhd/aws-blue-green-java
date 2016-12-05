@@ -1,0 +1,33 @@
+{
+  "Parameters": {
+    "LoadBalancerName": {
+      "Type": "String",
+      "Description": "Name of this loadbalancer. This is the name that you must specify when attaching an autoscaling group."
+    }
+  },
+  "Resources": {
+    "UserServiceELB": {
+      "Type" : "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "LoadBalancerName": {"Ref": "LoadBalancerName"},
+        "SecurityGroups": ["sg-15931b73"],
+        "AvailabilityZones": ["eu-west-1a", "eu-west-1b"],
+        "Listeners" : [ {
+          "LoadBalancerPort" : "80",
+          "InstancePort" : "8080",
+          "Protocol" : "HTTP"
+        } ],
+        "HealthCheck" : {
+          "Target" : "HTTP:8080/healthcheck",
+          "HealthyThreshold" : "3",
+          "UnhealthyThreshold" : "5",
+          "Interval" : "30",
+          "Timeout" : "5"
+        },
+        "Tags": [
+          {"Key": "Name", "Value": {"Ref": "LoadBalancerName"}}
+        ]
+      }
+    }
+  }
+}
